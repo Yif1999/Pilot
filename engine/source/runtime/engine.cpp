@@ -1,4 +1,4 @@
-﻿#include "runtime/engine.h"
+#include "runtime/engine.h"
 
 #include "runtime/core/base/macro.h"
 #include "runtime/core/meta/reflection/reflection_register.h"
