@@ -28,5 +28,6 @@ namespace Pilot
         AnimationFSM();
         bool        update(const json11::Json::object& signals);
         std::string getCurrentClipBaseName() const;
+        std::string getCurrentState() const;
     };
 } // namespace Pilot

@@ -36,7 +36,7 @@ namespace Pilot
         std::vector<PhysicsHitInfo> hits;
 
         Transform world_transform = Transform(
-            current_position + 0.1f * Vector3::UNIT_Z,
+            current_position,
             Quaternion::IDENTITY,
             Vector3::UNIT_SCALE);
 
@@ -48,16 +48,20 @@ namespace Pilot
 
         Vector3 final_position = current_position;
 
-        m_is_touch_ground = physics_scene->sweep(
-            m_rigidbody_shape,
-            world_transform.getMatrix(),
+        m_is_touch_ground = physics_scene->raycast(
+            world_transform.m_position,
             Vector3::NEGATIVE_UNIT_Z,
-            0.105f,
+            0.01f,
             hits);
+        
+//        if (m_is_touch_ground) {
+//            printf("touch ground!\n");
+//        } else {
+//            printf("no touch ground!\n");
+//
+//        }
 
         hits.clear();
-        
-        world_transform.m_position -= 0.1f * Vector3::UNIT_Z;
 
         // vertical pass
         if (physics_scene->sweep(
@@ -65,7 +69,9 @@ namespace Pilot
             world_transform.getMatrix(),
             vertical_direction,
             vertical_displacement.length(),
-            hits))
+            hits)
+            &&
+            m_is_touch_ground)
         {
             final_position += hits[0].hit_distance * vertical_direction;
         }
@@ -77,16 +83,32 @@ namespace Pilot
         hits.clear();
 
         // side pass
-        //if (physics_scene->sweep(
-        //    m_rigidbody_shape,
-        //    /**** [0] ****/,
-        //    /**** [1] ****/,
-        //    /**** [2] ****/,
-        //    hits))
-        //{
-        //    final_position += /**** [3] ****/;
-        //}
-        //else
+        world_transform.m_position += 0.1f * Vector3::UNIT_Z;
+        if (physics_scene->sweep(
+            m_rigidbody_shape,
+            world_transform.getMatrix(),
+            horizontal_direction,
+            horizontal_displacement.length(),
+            hits))
+        {
+            world_transform.m_position += 0.2f * Vector3::UNIT_Z;
+            if (!physics_scene->sweep(
+              m_rigidbody_shape,
+              world_transform.getMatrix(),
+              horizontal_direction,
+              horizontal_displacement.length(),
+              hits))
+            {
+                final_position += Vector3(0.f, 0.f, 0.2f) + horizontal_displacement;
+            }
+            else
+            {
+                float sliding_displacement = hits[0].hit_normal.x * horizontal_displacement.y - hits[0].hit_normal.y * horizontal_displacement.x;
+                Vector3 sliding_direction = Vector3(-hits[0].hit_normal.y, hits[0].hit_normal.x, hits[0].hit_normal.z);
+                final_position += sliding_direction * sliding_displacement;
+            }
+        }
+        else
         {
             final_position += horizontal_displacement;
         }
