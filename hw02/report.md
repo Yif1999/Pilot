@@ -47,11 +47,11 @@ void main()
 
 使用Affinity Photo对Pilot原始画面截帧进行了调色，导出为cube格式的lut后，对一张16\*16\*16的Neutral Lut进行套lut映射保存得到自定义lut图。
 
-![custom_lut](/Volumes/T7/Dev/Pilot/homework/hw02/report.assets/custom_lut.png)
+![custom_lut](./report.assets/custom_lut.png)
 
 引擎改用这张图后得到的效果如下（属于是提亮冷色高饱和战士）。
 
-![image-20220515184546852](/Volumes/T7/Dev/Pilot/homework/hw02/report.assets/image-20220515184546852.png)
+![image-20220515184546852](./report.assets/image-20220515184546852.png)
 
 ### 提高项
 
