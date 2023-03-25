@@ -69,7 +69,7 @@
 
 按照作业要求的状态转移图填写了switch部分代码，在各个状态下依照优先级顺序依次根据`is_moving `、 `is_jumping`等标识符的状态变化将`m_state`切换至下一状态。
 
-![image-20220712113711254](/Volumes/T7/Dev/GAMES104/homework/hw03/Games104_homework3_report.assets/image-20220712113711254.png)
+![image-20220712113711254](./Games104_homework3_report.assets/image-20220712113711254.png)
 
 目前对状态转移图仍存在一些困惑，比如`start_walk_end`的作用没有搞清楚，并且认为角色在动起来之后除开跳跃情况已经进入了idle_walk_run三者的BlendState，貌似没有机会也没有必要进入walk_start和walk_end状态，于是尝试精简掉了该部分代码，经过测试删减后的动作表现也能够正常满足所有状态机逻辑。
 
